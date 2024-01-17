@@ -35,8 +35,8 @@ async function validateAndFindUser({ req, res, validateParams, requireUser = tru
   if (validationErrors)
     validationErrors = errorResponse.validationErrors({ res: res, validationErrors: validationErrors });
   else {
-     if (req.body.id) user = await User.findById(req.body.id);
-   else if (req.body.email) user = await User.findOne({ email: req.body.email });
+    if (req.body.id) user = await User.findById(req.body.id);
+    else if (req.body.email) user = await User.findOne({ email: req.body.email });
 
     if (user && !requireUser) validationErrors = errorResponse.userIsFound({ res: res });
     else if (!user && requireUser) validationErrors = errorResponse.userNotFound({ res: res });

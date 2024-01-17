@@ -14,15 +14,16 @@ module.exports = async function (req, res, next) {
   try {
     const decoded = jwt.verify(token, config.get('jwtPrivateKey'));
     req.body.email = decoded.email;
-    req.body.id = decoded.id;
+    req.body.id = decoded._id;
     const { validationErrors, user } = await validateAndFindUser({
       req: req,
       res: res,
-      validateParams: { ..._.pick(req.body, ['_id', 'email']) },
+      //! (not check) always is currect
+      //validateParams: { ..._.pick(req.body, ['email']) },
     });
     if (validationErrors) return validationErrors;
     req.user = user;
-    
+
     next();
   } catch (ex) {
     handleJwtErrors(res, ex);

@@ -6,7 +6,7 @@ module.exports = function () {
   const logDir = path.join('logs', process.env.NODE_ENV);
 
   const customFormat = winston.format.printf(({ level, message, timestamp }) => {
-    return `\nTime: ${timestamp} \nLevel: [${level}] \nMessage: ${message}`;
+    return `\nTime: ${timestamp} \nLevel: [${level}] \nMessage: ${message}\n`;
   });
 
   const fileFormat = winston.format.combine(

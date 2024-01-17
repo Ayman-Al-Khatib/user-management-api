@@ -1,6 +1,5 @@
 function errorHandler(err, req, res, next) {
-  console.error(err.status);
-
+ 
   const errorMessage = err.message || 'Internal Server Error';
   const statusCode = err.status || 500;
 
@@ -8,3 +7,4 @@ function errorHandler(err, req, res, next) {
 }
 
 module.exports = errorHandler;
+ 

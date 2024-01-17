@@ -32,7 +32,7 @@ exports.signin = async (req, res) => {
   if (!isPasswordValid) return errorResponse.invalidEmailOrPassword({ res: res });
   if (user && user.approve === null) return await errorResponse.userNotApproved({ res: res, user: user });
 
-  const authToken = tokenGenerator({ _id: user._id, email: user.email }, '1h');
+  const authToken = tokenGenerator({ ...user._doc }, '24h');
   return successResponse.sign({ res: res, authToken: authToken, details: user });
 };
 
@@ -43,10 +43,12 @@ exports.updateUser = async (req, res) => {
   for (let key in _.pick(req.body, ['name'])) {
     req.user[key] = req.body[key];
   }
-  if (req.password) req.user.password = await hashPassword(req.body.newPassword);
+
+  if (req.body.password) req.user.password = await hashPassword(req.body.password);
   const befor = req.user.updatedAt;
   await req.user.save();
   const after = req.user.updatedAt;
+
   if (befor === after) return errorResponse.noChangesMade({ res: res });
   return successResponse.sign({ res: res, details: req.user });
 };
@@ -77,7 +79,7 @@ exports.forgotPassword = async (req, res) => {
 
   if (!ansCheck) {
     user.password = await hashPassword(req.body.newPassword);
-    user.approve = true;
+    user.approve = new Date();
     await user.save();
     return successResponse.passwordResetSuccessfully({ res: res });
   }
@@ -85,13 +87,7 @@ exports.forgotPassword = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const { validationErrors, user } = await validateAndFindUser({
-    req: req,
-    res: res,
-    validateParams: { id: true },
-  });
-  if (validationErrors) return validationErrors;
-  await user.deleteOne();
+  await req.user.deleteOne();
   return successResponse.userDeletedSuccessfully({ res: res });
 };
 
