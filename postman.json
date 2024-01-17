@@ -1,0 +1,289 @@
+{
+    "info": {
+        "_postman_id": "301a8d34-8b49-4bc5-a636-cf9aca7bba50",
+        "name": "UserManagementSystem",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "25918044"
+    },
+    "item": [
+        {
+            "name": "signin",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "ayman",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/signin",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "signin"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "signup",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "name",
+                            "value": "ayman",
+                            "type": "text"
+                        },
+                        {
+                            "key": "email",
+                            "value": "king1aeman@gmail.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "ayman",
+                            "type": "text"
+                        },
+                        {
+                            "key": "approve",
+                            "value": "true1",
+                            "type": "text",
+                            "disabled": true
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/signup",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "signup"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "change-password",
+            "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "ayman",
+                            "type": "text"
+                        },
+                        {
+                            "key": "newPassword",
+                            "value": "12345",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/change-password",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "change-password"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "forgot-password",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "x-auth-token",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQxMDBlZjg5NGYwMzc1YWQ5N2UyNzAiLCJlbWFpbCI6ImF5bWFuQGdtYWlsLmNvbSIsImlhdCI6MTY5ODc2MTk2NSwiZXhwIjoxNjk4NzYyMDE1fQ.2N-zP_Faie-joesUG0FaumTud_DOxfVsfJXgpJGoyLU",
+                        "type": "text",
+                        "disabled": true
+                    }
+                ],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "verifyCode",
+                            "value": "uM337p",
+                            "type": "text"
+                        },
+                        {
+                            "key": "newPassword",
+                            "value": "12345",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/forgot-password",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "forgot-password"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "delete-user",
+            "request": {
+                "method": "DELETE",
+                "header": [
+                    {
+                        "key": "x-auth-token",
+                        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ3NWEzMzM2ZmYyMWE5OTI2NWQ2NDQiLCJlbWFpbCI6ImtpbmcxYWVtYW5AZ21haWwuY29tIiwiaWF0IjoxNjk5MTc2NDUzLCJleHAiOjE2OTkxODAwNTN9.O5EqSfU3J5Rc12WwmuyFZWOhNTpjvsquSJWheu1UUKg",
+                        "type": "text"
+                    },
+                    {
+                        "key": "",
+                        "value": "",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "id",
+                            "value": "65475a3336ff21a99265d644",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/delete-user",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "delete-user"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "approve-user",
+            "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "type": "text"
+                        },
+                        {
+                            "key": "password",
+                            "value": "ayman",
+                            "type": "text"
+                        },
+                        {
+                            "key": "verifyCode",
+                            "value": "123456",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/approve-user",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "approve-user"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "send-verification-email",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                    "mode": "urlencoded",
+                    "urlencoded": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "http://localhost:5000/send-verification-email",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "send-verification-email"
+                    ],
+                    "query": [
+                        {
+                            "key": "email",
+                            "value": "ayman@gmail.com",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}

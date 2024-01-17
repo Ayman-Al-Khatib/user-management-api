@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family:fantasy Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 50px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        p {
+            text-align: center;
+            color: #666;
+        }
+
+        .verification-code {
+            font-size: 24px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            border-radius: 50px;
+            margin-top: 20px;
+            background: linear-gradient(to right, #007bff, #0056b3);
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Welcome to Node Js</h1>
+        <p>We are thrilled to have you on board. Please use the following verification code to confirm your email
+            address:</p>
+        <div class="verification-code">{{verificationCode}}</div>
+        <p>Please don't share your verification code with anyone as it is private to you. If you didn't request this
+            verification, please ignore this email or <a href="#">contact support</a>.</p>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+### Sign Up (Create User)
+POST http://localhost:5000/signup
+Content-Type: application/json
+
+{
+  "name": "ayman",
+  "email": "ayman@gmail.com",
+  "password": "ayman"
+}
+
+
+
+### Sign In (User Authentication)
+POST http://localhost:5000/signin
+Content-Type: application/json
+
+{
+  "email": "ayman@gmail.com",
+  "password": "ayman"
+}
+
+
+
+### Delete User Account
+DELETE http://localhost:5000/delete-user
+Authorization: Bearer your-auth-token
+
+{
+    "x-auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ1NmNjYzZkNDNjZGFlZDMxMjJiZTciLCJlbWFpbCI6Im5ld3VzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2OTkwNDg5MzIsImV4cCI6MTY5OTA1MjUzMn0.ZxZPpFbJvQ7WJ-Vt4y4SMWHSbdLH07TBMZLRRs-jn88"
+}
+
+### Forget Password (Reset Password Request)
+PUT  http://localhost:5000/forgot-password
+Content-Type: application/json
+
+{
+  "email": "ayman@gmail.com",
+  "newPassword":"ayman",
+  "verifyCode":"123456"
+}
+
+
+### Change Password (Reset Password)
+PUT http://localhost:5000/change-password
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTQ1NmNjYzZkNDNjZGFlZDMxMjJiZTciLCJlbWFpbCI6Im5ld3VzZXJAZXhhbXBsZS5jb20iLCJpYXQiOjE2OTkxMTk5MDAsImV4cCI6MTY5OTEyMzUwMH0.HpQ9bDogtFa9HINyoqMjaqfW7ldQFcrFPeMQEkRKfOc
+Content-Type: application/json
+ 
+{
+    "email":"ayman@gmail.com",
+    "password":"ayman",
+    "newPassword": "12345"
+}
+
+### Send Verification Email
+POST  http://localhost:5000/send-verification-email
+Content-Type: application/json
+
+{
+    "email":"ayman@gmail.com"
+}
+
+### Approve User 
+PUT  http://localhost:5000/approve-user
+Content-Type: application/json
+
+{
+    "email":"ayman@gmail.com",
+    "password":"12345",
+    "verifyCode":"123456"
+}
