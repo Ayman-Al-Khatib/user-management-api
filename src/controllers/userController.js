@@ -30,7 +30,7 @@ exports.signin = async (req, res) => {
 
   const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
   if (!isPasswordValid) return errorResponse.invalidEmailOrPassword({ res: res });
-  if (user && user.approve == false) return await errorResponse.userNotApproved({ res: res, user: user });
+  if (user && user.approve === null) return await errorResponse.userNotApproved({ res: res, user: user });
 
   const authToken = tokenGenerator({ _id: user._id, email: user.email }, '1h');
   return successResponse.sign({ res: res, authToken: authToken, details: user });
