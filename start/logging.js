@@ -1,36 +1,37 @@
 const winston = require('winston');
+const path = require('path');
 
 module.exports = function () {
   const logLevel = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
+  const logDir = path.join('logs', process.env.NODE_ENV);
 
-  const baseLogTransports = [
+  const customFormat = winston.format.printf(({ level, message, timestamp }) => {
+    return `\nTime: ${timestamp} \nLevel: [${level}] \nMessage: ${message}`;
+  });
+
+  const fileFormat = winston.format.combine(
+    winston.format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss',
+    }),
+    customFormat,
+  );
+
+  const transports = [
     new winston.transports.File({
-      filename: 'logs/error.log',
+      filename: path.join(logDir, 'error.log'),
       level: 'error',
+      format: fileFormat,
     }),
     new winston.transports.File({
-      filename: 'logs/info.log',
-      level: 'info',
-    }),
-    new winston.transports.File({
-      filename: 'logs/warn.log',
-      level: 'warn',
+      filename: path.join(logDir, 'combined.log'),
+      format: fileFormat,
     }),
   ];
 
-  const transports =
-    logLevel !== 'debug'
-      ? baseLogTransports
-      : baseLogTransports.concat(new winston.transports.File({ filename: 'logs/debug.log' }));
-
   winston.configure({
+    level: logLevel,
     transports: transports,
-    format: winston.format.combine(
-      winston.format.timestamp({
-        format: 'YYYY-MM-DD HH:mm:ss',
-      }),
-      winston.format.json(),
-    ),
+    format: winston.format.json(),
   });
 
   if (logLevel === 'debug') {
@@ -42,6 +43,7 @@ module.exports = function () {
           winston.format.timestamp({
             format: 'YYYY-MM-DD HH:mm:ss',
           }),
+          customFormat,
         ),
         level: logLevel,
       }),

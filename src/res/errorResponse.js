@@ -60,3 +60,10 @@ exports.verificationCodeNotSent = async ({
     details: message,
   });
 };
+
+exports.noChangesMade = ({
+  res,
+  message = 'No changes were made as the provided data either matches the existing records or no new data was provided.',
+}) => {
+  return res.status(401).json({ status: status, details: message });
+};

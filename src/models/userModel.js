@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const validationSchemas = require('../utils/validationSchemas');
+const validationSchemas = require('../utils/validationUser');
 const yup = require('yup');
+const { trim } = require('lodash');
 
 const userSchema = new mongoose.Schema(
   {
@@ -9,6 +10,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       minlength: 3,
       maxlength: 50,
+      trim: true,
     },
     email: {
       type: String,
@@ -16,19 +18,21 @@ const userSchema = new mongoose.Schema(
       minlength: 5,
       maxlength: 255,
       unique: true,
+      trim: true,
     },
     password: {
       type: String,
       required: true,
       minlength: 5,
       maxlength: 128,
+      trim: true,
     },
     verifyCode: {
       type: String,
     },
     approve: {
-      type: Boolean,
-      default: false,
+      type: Date,
+      default: null,
     },
   },
   {

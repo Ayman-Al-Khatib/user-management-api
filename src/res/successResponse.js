@@ -2,12 +2,19 @@ const _ = require('lodash');
 const status = 'success';
 
 exports.sign = ({ res, authToken, details }) => {
+  let data = {};
+  for (let key in details._doc) {
+    if (key !== 'password') {
+      data[key] = details._doc[key];
+    }
+  }
+  data['x-auth-token'] = authToken;
   return res
     .status(200)
-    .header('x-auth-token', authToken)
+
     .json({
       status: status,
-      details: _.pick(details, ['_id', 'name', 'email']),
+      details: data,
     });
 };
 exports.sendEmail = ({ res, message = 'Verification code sent successfully' }) => {

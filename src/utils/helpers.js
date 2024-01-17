@@ -9,7 +9,6 @@ const emailService = require('../services/emailService');
 
 async function hashPassword(password) {
   const salt = await bcrypt.genSalt(12);
-
   return bcrypt.hash(password, salt);
 }
 
@@ -23,7 +22,7 @@ function handleJwtErrors(res, ex) {
   return res.status(400).json({ status: 'failure', details: errorMessage });
 }
 function handleVerificationCodeErrors(res, ex) {
-  let errorMessage = 'An unexpected error occurred during verification code.';
+  let errorMessage = 'An unexpected error occurred while processing the verification code.';
   if (ex instanceof jwt.TokenExpiredError) {
     errorMessage = 'The verification code has expired.';
   }
@@ -32,7 +31,6 @@ function handleVerificationCodeErrors(res, ex) {
 
 async function validateAndFindUser({ req, res, validateParams, requireUser = true }) {
   let validationErrors, user;
-
   validationErrors = await validateUser({ user: req.body, ...validateParams });
   if (validationErrors)
     validationErrors = errorResponse.validationErrors({ res: res, validationErrors: validationErrors });
@@ -57,9 +55,8 @@ async function sendVerificationCode({ user }) {
   await user.save();
   return user;
 }
-async function checkToken({ user, sendToken, res }) {
+async function checkCodeIsSame({ user, sendToken, res }) {
   const token = user.verifyCode;
-  console.log(sendToken);
 
   if (!token) return errorResponse.verificationCodeNotSent({ res: res });
   try {
@@ -67,12 +64,11 @@ async function checkToken({ user, sendToken, res }) {
   } catch (ex) {
     return handleVerificationCodeErrors(res, ex);
   }
-  console.log(decodedToken.code, sendToken);
   if (decodedToken.code != sendToken) {
     return errorResponse.verifyCodeIsIncorrect({ res: res });
   } else {
     user.verifyCode = undefined;
-    user.approve = true;
+    user.approve = new Date();
   }
   return null;
 }
@@ -83,5 +79,5 @@ module.exports = {
   hashPassword,
   handleVerificationCodeErrors,
   sendVerificationCode,
-  checkToken,
+  checkCodeIsSame,
 };

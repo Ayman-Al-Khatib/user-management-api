@@ -24,6 +24,12 @@ module.exports = async ({
     subject: subject,
     html: emailContent,
   };
-
-  return await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (err) {
+    err.status = 401;
+    err.message =
+      'An error occurred while sending the email to the address you provided. Please ensure you have an active internet connection and that the email address is correct, then try again.';
+    throw err;
+  }
 };

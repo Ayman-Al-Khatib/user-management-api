@@ -1,20 +1,10 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
-const { User } = require('../models/userModel');
-const codeGenerator = require('../utils/codeGenerator');
-const emailService = require('../services/emailService');
+const { User, validateUser } = require('../models/userModel');
 const tokenGenerator = require('../utils/tokenGenerator');
-const config = require('config');
-const jwt = require('jsonwebtoken');
 const errorResponse = require('../res/errorResponse');
 const successResponse = require('../res/successResponse');
-const {
-  hashPassword,
-  validateAndFindUser,
-  handleVerificationCodeErrors,
-  sendVerificationCode,
-  checkToken,
-} = require('../utils/helpers');
+const { hashPassword, validateAndFindUser, sendVerificationCode, checkCodeIsSame } = require('../utils/helpers');
 
 exports.signup = async (req, res) => {
   const { validationErrors } = await validateAndFindUser({
@@ -46,23 +36,19 @@ exports.signin = async (req, res) => {
   return successResponse.sign({ res: res, authToken: authToken, details: user });
 };
 
-exports.changePassword = async (req, res) => {
-  const { validationErrors, user } = await validateAndFindUser({
-    req: req,
-    res: res,
-    validateParams: { email: true, password: true, newPassword: true },
-  });
-  if (validationErrors) return validationErrors;
+exports.updateUser = async (req, res) => {
+  const validationErrors = await validateUser({ user: req.body, ..._.pick(req.body, ['name', 'password']) });
+  if (validationErrors) return errorResponse.validationErrors({ res: res, validationErrors: validationErrors });
 
-  const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
-  if (!isPasswordValid) return errorResponse.invalidPassword({ res: res });
-
-  if (user && user.approve == false) return await errorResponse.userNotApproved({ res: res, user: user });
-
-  user.password = await hashPassword(req.body.newPassword);
-  await user.save();
-
-  return successResponse.sign({ res: res, details: user });
+  for (let key in _.pick(req.body, ['name'])) {
+    req.user[key] = req.body[key];
+  }
+  if (req.password) req.user.password = await hashPassword(req.body.newPassword);
+  const befor = req.user.updatedAt;
+  await req.user.save();
+  const after = req.user.updatedAt;
+  if (befor === after) return errorResponse.noChangesMade({ res: res });
+  return successResponse.sign({ res: res, details: req.user });
 };
 
 exports.sendEmailVerificationCode = async (req, res) => {
@@ -87,7 +73,7 @@ exports.forgotPassword = async (req, res) => {
   if (validationErrors) return validationErrors;
   console.log(user.verifyCode);
 
-  const ansCheck = await checkToken({ user: user, sendToken: req.body.verifyCode, res: res });
+  const ansCheck = await checkCodeIsSame({ user: user, sendToken: req.body.verifyCode, res: res });
 
   if (!ansCheck) {
     user.password = await hashPassword(req.body.newPassword);
@@ -116,14 +102,10 @@ exports.confirmUser = async (req, res) => {
     validateParams: { verifyCode: true, email: true, password: true },
   });
   if (validationErrors) return validationErrors;
-  const ansCheck = await checkToken({ user: user, sendToken: req.body.verifyCode, res: res });
+  const ansCheck = await checkCodeIsSame({ user: user, sendToken: req.body.verifyCode, res: res });
   if (!ansCheck) {
     await user.save();
     return successResponse.userApproved({ res: res });
   }
   return ansCheck;
 };
-
-
-  
- 
