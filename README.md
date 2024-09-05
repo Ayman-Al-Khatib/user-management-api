@@ -74,9 +74,5 @@ Contributions are welcome! If you'd like to contribute to the project, please fo
 
 We appreciate your contributions!
 
-## Contact
-
-For any questions or inquiries, feel free to contact us at [ayman.jop.000@gmail.com](mailto:ayman.jop.000@gmail.com).
-
 #
 #
